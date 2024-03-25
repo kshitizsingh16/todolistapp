@@ -26,7 +26,7 @@ const item3 = new Item({
   name: "<-- Hit this to delete an item",
 });
 const defaultitems = [item1, item2, item3];
-const listschema =  mongoose.Schema({
+const listschema = mongoose.Schema({
   name: String,
   items: [itemsschema],
 });
@@ -56,7 +56,7 @@ app.get("/:customListName", function (req, res) {
 
   const findlist = async () => {
     const listname = await List.findOne({ name: customListName }).exec();
-  
+
     // console.log(listname);
     if (!listname) {
       const list = new List({
