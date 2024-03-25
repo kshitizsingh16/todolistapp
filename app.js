@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -6,12 +7,9 @@ const _ = require("lodash");
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-mongoose.connect(
-  "mongodb+srv://skshitiz250:Kshitiz84@cluster0.ebbs0iq.mongodb.net/todolistDB",
-  {
-    useNewUrlParser: true,
-  }
-);
+mongoose.connect(process.env.MONGOD_URL, {
+  useNewUrlParser: true,
+});
 const itemsschema = new mongoose.Schema({
   name: String,
 });
@@ -36,8 +34,6 @@ const List = mongoose.model("List", listschema);
 app.set("view engine", "ejs");
 
 app.get("/", function (req, res) {
-  // const day = date.getdate();
-
   const find = async () => {
     const data = await Item.find({});
     if (data.length === 0) {
@@ -52,12 +48,11 @@ app.get("/", function (req, res) {
 });
 app.get("/:customListName", function (req, res) {
   const customListName = _.capitalize(req.params.customListName);
-  console.log(customListName);
+  
 
   const findlist = async () => {
     const listname = await List.findOne({ name: customListName }).exec();
 
-    // console.log(listname);
     if (!listname) {
       const list = new List({
         name: customListName,
