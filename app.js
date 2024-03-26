@@ -48,7 +48,6 @@ app.get("/", function (req, res) {
 });
 app.get("/:customListName", function (req, res) {
   const customListName = _.capitalize(req.params.customListName);
-  
 
   const findlist = async () => {
     const listname = await List.findOne({ name: customListName }).exec();
